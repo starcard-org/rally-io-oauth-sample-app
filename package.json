@@ -1,0 +1,24 @@
+{
+  "name": "rally-io-oauth-sample-app",
+  "version": "1.0.0",
+  "description": "Sample App for Rally IO OAuth API",
+  "scripts": {
+    "start": "node sample-app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starcard-org/rally-io-oauth-sample-app.git"
+  },
+  "author": "Alain Caron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/starcard-org/rally-io-oauth-sample-app/issues"
+  },
+  "homepage": "https://github.com/starcard-org/rally-io-oauth-sample-app#readme",
+  "dependencies": {
+    "@hapi/hapi": "^20.1.0",
+    "@hapi/inert": "^6.0.3",
+    "axios": "^0.21.1"
+  }
+}

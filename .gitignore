@@ -1,0 +1,23 @@
+node_modules
+.webpack
+yarn.lock
+
+.DS_Store
+
+./openapi.json
+./types/globalTypes.ts
+build
+
+.envrc
+*~
+\#*\#
+.\#*
+*.swp
+
+_envvars.sh
+.nyc_output
+coverage
+*.bak
+
+# Other
+setup.sh
