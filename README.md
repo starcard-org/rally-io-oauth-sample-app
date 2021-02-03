@@ -19,7 +19,8 @@ http://localhost:{port}/callback)
 
 ### Run command
 ```bash
-node sample-app.js
+npm install
+npm run start
 ```
 
 ### Start the data-api service
