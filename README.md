@@ -2,11 +2,6 @@
 
 ## Run locally
 
-### Note
-The library hapi being used in the sample app (the latest at the
-moment) has a problem under node 15.  It has been developed using node
-12
-
 ### Setup environment variables
 
 * RALLY_IO_USERNAME
