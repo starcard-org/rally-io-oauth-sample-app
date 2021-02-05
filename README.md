@@ -22,11 +22,6 @@ http://localhost:{port}/callback)
 npm install
 npm run start
 ```
-
-### Start the data-api service
-Start the data-api service as indicated in the data-api documentation
-or make sure env variables point to a running data-api service.
-
 ### Sample commands
 
 * Trigger the Sample App to register into Rally
