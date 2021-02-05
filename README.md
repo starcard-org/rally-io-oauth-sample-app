@@ -13,7 +13,7 @@ This App is a simple Node.Js server that can
 This endpoint submits developer credentials to Rally and memorizes 
 newly acquired access and refresh tokens
 
-* GET /register\
+* GET /refresh \
 This endpoint submits the refresh token to Rally and obtain a new
 access token.
 
