@@ -175,6 +175,27 @@ async function start() {
     }
   });
 
+  server.route({
+    method: 'POST',
+    path: "/transfer",
+    handler: async function(request, h) {
+      console.log("/transfer");
+      if (!access_token) {
+        return h.response("Application Not Registered With Rally").code(401);
+      }
+      console.log("Calling Rally IO transfer API");
+      const rally_response = await httpPost(
+        rally_api_url + "/transactions/transfer/initiate",
+        //{ fromRnbUserId, toRnbUserId, coinKind, amount, inputType, note, showNote, showUserName },
+        request.payload,
+        { Authorization: "Bearer " + access_token }
+      );
+
+      console.log(`rally_response = ${JSON.stringify(rally_response.data)}`);
+      return h.response(rally_response.data).code(rally_response.status);
+    }
+  });
+
   await server.start();
 
   console.log('Server running at:', server.info.uri);
