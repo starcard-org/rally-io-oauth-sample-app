@@ -31,6 +31,9 @@ authenticated user.  It then shows the retrieved informat.  The
 information currently consists of the user id of the user but it will
 be the handle to the user.
 
+* POST /transfer\
+This endpoint initiates a transfer.  It uses the access token to authenticate the request to the Rally IO server.  It forwards its body to Rally IO endpoint and returns the Rally IO response.
+
 ## Run locally
 
 ### Setup environment variables
