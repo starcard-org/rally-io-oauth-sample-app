@@ -204,7 +204,6 @@ async function start() {
         return h.response("Application Not Registered With Rally").code(401);
       }
       console.log(`params = ${JSON.stringify(request.query)}`);
-      console.log('token: ' + access_token);
 
       const rnbUserId = request.query.rnbUserId;
       const symbol = request.query.symbol;
