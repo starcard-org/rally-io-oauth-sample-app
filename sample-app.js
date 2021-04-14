@@ -198,6 +198,35 @@ async function start() {
 
   server.route({
     method: 'GET',
+    path: '/top_holders_and_transactions',
+    handler: async function(request, h) {
+      if (!access_token) {
+        return h.response("Application Not Registered With Rally").code(401);
+      }
+      console.log(`params = ${JSON.stringify(request.query)}`);
+
+      const rnbUserId = request.query.rnbUserId;
+      const symbol = request.query.symbol;
+      const timePeriod = request.query.timePeriod;
+
+      console.log('Calling GET /creators/top_holders_and_transactions');
+      const rally_response = await httpGet(
+        rally_api_url + `/creators/top_holders_and_transactions?rnbUserId=${rnbUserId}&symbol=${symbol}&timePeriod=${timePeriod}`,
+        { Authorization: "Bearer " + access_token },
+      );
+      console.log(`rally_response = ${JSON.stringify(rally_response.data)}`);
+
+      const status = rally_response.status;
+      if (status == 200) {
+        return h.response(rally_response.data).code(200);
+      } else {
+        return h.response(rally_response.statusText).code(status);
+      }
+    }
+  });
+
+  server.route({
+    method: 'GET',
     path: "/userinfo/{userId}",
     handler: async function(request, h) {
       console.log("/userinfo");
