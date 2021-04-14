@@ -196,6 +196,27 @@ async function start() {
     }
   });
 
+  server.route({
+    method: 'GET',
+    path: "/userinfo/{userId}",
+    handler: async function(request, h) {
+      console.log("/userinfo");
+      if (!access_token) {
+        return h.response("Application Not Registered With Rally").code(401);
+      }
+      const userId = request.params.userId;
+      console.log(`userId = ${userId}`);
+      console.log("Calling Rally IO userinfo API");
+      const rally_response = await httpGet(
+        `${rally_api_url}/users/rally/${userId}/userinfo`,
+        { Authorization: "Bearer " + access_token }
+      );
+
+      console.log(`rally_response = ${JSON.stringify(rally_response.data)}`);
+      return h.response(rally_response.data).code(rally_response.status);
+    }
+  });
+
   await server.start();
 
   console.log('Server running at:', server.info.uri);
