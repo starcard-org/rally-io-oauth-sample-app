@@ -198,7 +198,7 @@ async function start() {
 
   server.route({
     method: 'GET',
-    path: '/creators/top_holders_and_transactions',
+    path: '/top_holders_and_transactions',
     handler: async function(request, h) {
       if (!access_token) {
         return h.response("Application Not Registered With Rally").code(401);
