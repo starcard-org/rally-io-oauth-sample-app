@@ -34,8 +34,11 @@ be the handle to the user.
 * POST /transfer\
 This endpoint initiates a transfer.  It uses the access token to authenticate the request to the Rally IO server.  It forwards its body to Rally IO endpoint and returns the Rally IO response.
 
-* GET /top_holders_and_transactions\
-This endpoint is returning top holders and transactions (buy, send, sell) for a specific coin.
+* GET /top_holders_and_transactions?rnbUserId=&lt;rnbUserId&gt;&symbol=&lt;symbol&gt;&period=&lt;period&gt;\
+This endpoint returns top holders and transactions (buy, send, sell) for a specific coin.
+
+* POST /userinfo/&lt;rnbUserId&gt;\
+This endpoint returns user information about the user
 
 ## Run locally
 
