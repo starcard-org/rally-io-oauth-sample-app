@@ -246,6 +246,28 @@ async function start() {
     }
   });
 
+  server.route({
+    method: 'GET',
+    path: "/flow_control_limits/{userId}/{coinSymbol}",
+    handler: async function(request, h) {
+      console.log("/flow_control_limits/{userId}/{coinSymbol}");
+      if (!access_token) {
+        return h.response("Application Not Registered With Rally").code(401);
+      }
+      const userId = request.params.userId;
+      const coinSymbol = request.params.coinSymbol;
+
+      console.log(`Calling Rally IO flow_control_limits API with userId = ${userId}, coinSymbol = ${coinSymbol}`);
+      const rally_response = await httpGet(
+        `${rally_api_url}/users/rally/${userId}/flow_control_limits/${coinSymbol}`,
+        { Authorization: "Bearer " + access_token }
+      );
+
+      console.log(`rally_response = ${JSON.stringify(rally_response.data)}`);
+      return h.response(rally_response.data).code(rally_response.status);
+    }
+  });
+
   await server.start();
 
   console.log('Server running at:', server.info.uri);
