@@ -11,7 +11,7 @@ This App is a simple Node.Js server that can
 
 * GET /register\
 This endpoint submits developer credentials to Rally and memorizes 
-newly acquired access and refresh tokens
+newly acquired access and refresh tokens.
 
 * GET /refresh \
 This endpoint submits the refresh token to Rally and obtain a new
@@ -19,10 +19,10 @@ access token.
 
 * GET /authorize.html\
 This returns a form to allow the user to initiate the authorization
-flow
+flow.
 
 * POST /authorize\
-This endpoint starts the authorization flow for the user
+This endpoint starts the authorization flow for the user.
 
 * GET /callback\
 This endpoint receives an authorization code as query parameter. It
@@ -38,7 +38,10 @@ This endpoint initiates a transfer.  It uses the access token to authenticate th
 This endpoint returns top holders and transactions (buy, send, sell) for a specific coin.
 
 * POST /userinfo/&lt;rnbUserId&gt;\
-This endpoint returns user information about the user
+This endpoint returns user information about the user.
+
+* POST /flow_control_limits/&lt;rnbUserId&gt;/&lt;symbol&gt;\
+This endpoint returns the flow control limits for a user for a specific coin symbol.
 
 ## Run locally
 

@@ -248,18 +248,18 @@ async function start() {
 
   server.route({
     method: 'GET',
-    path: "/flow_control_limits/{userId}/{coinSymbol}",
+    path: "/flow_control_limits/{userId}/{symbol}",
     handler: async function(request, h) {
-      console.log("/flow_control_limits/{userId}/{coinSymbol}");
+      console.log("/flow_control_limits/{userId}/{symbol}");
       if (!access_token) {
         return h.response("Application Not Registered With Rally").code(401);
       }
       const userId = request.params.userId;
-      const coinSymbol = request.params.coinSymbol;
+      const symbol = request.params.symbol;
 
-      console.log(`Calling Rally IO flow_control_limits API with userId = ${userId}, coinSymbol = ${coinSymbol}`);
+      console.log(`Calling Rally IO flow_control_limits API with userId = ${userId}, symbol = ${symbol}`);
       const rally_response = await httpGet(
-        `${rally_api_url}/users/rally/${userId}/flow_control_limits/${coinSymbol}`,
+        `${rally_api_url}/users/rally/${userId}/flow_control_limits/${symbol}`,
         { Authorization: "Bearer " + access_token }
       );
 
