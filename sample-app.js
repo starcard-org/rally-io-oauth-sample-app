@@ -10,6 +10,7 @@ const username = process.env.RALLY_IO_USERNAME;
 const password = process.env.RALLY_IO_PASSWORD;
 const callback_url = process.env.SAMPLE_APP_CALLBACK || `http://localhost:${port}/callback`;
 const callback_path = new URL(callback_url).pathname;
+const crypto = require("crypto");
 
 function toConfig(headers) {
   return headers && Object.keys(headers).length ? { headers } : undefined;
@@ -129,10 +130,11 @@ async function start() {
       if (!access_token) {
         return h.response("Application Not Registered With Rally").code(401);
       }
-      console.log("Calling Rally IO authorize API");
+      const state = crypto.randomBytes(10).toString('hex');
+      console.log(`Calling Rally IO authorize API: state = ${state}`);
       const rally_response = await httpPost(
         rally_api_url + "/oauth/authorize",
-        { callback: callback_url },
+        { callback: callback_url, state },
         { Authorization: "Bearer " + access_token }
       );
 
@@ -157,7 +159,8 @@ async function start() {
       }
       console.log(`params = ${JSON.stringify(request.query)}`);
       const code = request.query.code;
-      console.log(`code = ${code}`);
+      const state = request.query.state;
+      console.log(`code = ${code}, state = ${state}`);
       if (code === "cancelled") {
         return h.response("No authorization to continue").code(200);
       }
