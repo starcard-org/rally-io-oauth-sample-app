@@ -52,7 +52,8 @@ This endpoint returns the flow control limits for a user for a specific coin sym
 * RALLY_IO_PASSWORD\
 (mandatory: password of developer)
 * RALLY_API_URL\
-(optional: base URL for data-api service. Defaults to http://localhost:3000)
+(base URL for data-api service. 
+If you are a community dev, set it to https://api.rally.io. If you are not a Rally core dev, it defaults to https://localhost:3004)
 * SAMPLE_APP_PORT\
 (optional: port to which the sample app listens. Defaults to 5555)
 * SAMPLE_APP_CALLBACK\
