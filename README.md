@@ -9,6 +9,8 @@ This App is a simple Node.Js server that can
 
 ## Endpoints
 
+Please refer to the following [documentation](https://api-docs.rally.io) for more information on the endpoints. 
+
 * GET /register\
 This endpoint submits developer credentials to Rally and memorizes 
 newly acquired access and refresh tokens.
@@ -52,13 +54,25 @@ This endpoint returns the flow control limits for a user for a specific coin sym
 * RALLY_IO_PASSWORD\
 (mandatory: password of developer)
 * RALLY_API_URL\
-(optional: base URL for data-api service. Defaults to http://localhost:3000)
+(base URL for data-api service. 
+- If you are a community dev, set it to https://api.rally.io. 
+- If you are a Rally core dev, connect your backend or else it defaults to https://localhost:3000)
+
 * SAMPLE_APP_PORT\
 (optional: port to which the sample app listens. Defaults to 5555)
 * SAMPLE_APP_CALLBACK\
 (callback for Rally into the sample app. Defaults to
 http://localhost:{port}/callback)
 
+As an example, create an `.env` file at the root level of your project.
+
+Add at least the required varibles to the `.env` file (with quotes).
+
+```
+RALLY_IO_USERNAME="yourusername"
+RALLY_IO_PASSWORD="yourpassword"
+```
+Utiize a package or another method to load environment variables such as `.dotenv`. For example, review and download the `.dotenv package`: https://www.npmjs.com/package/dotenv.
 
 ### Run command
 ```bash
