@@ -52,6 +52,25 @@ function set_authentication(data) {
   }
 }
 
+
+async function register(request, h) {
+  console.log("/register");
+  console.log("Trying to register to Rally");
+  const response = await httpPost(rally_api_url + "/oauth/register", {username, password});
+  const status = response.status;
+  console.log(`status = ${status}`);
+  const data = response.data;
+  console.log(`data = ${JSON.stringify(data,undefined,2)}`);
+  if (status == 200) {
+    set_authentication(data);
+    return h.response("Succesfully registered to Rally").code(200);
+  } else {
+    console.log('Registration failed: clearing authentication data');
+    set_authentication();
+    return h.response(response.statusText).code(status);
+  }
+}
+
 async function start() {
 
   const server = Hapi.server({
@@ -69,23 +88,7 @@ async function start() {
   server.route({
     method: 'GET',
     path: '/register',
-    handler: async (request, h) => {
-      console.log("/register");
-      console.log("Trying to register to Rally");
-      const response = await httpPost(rally_api_url + "/oauth/register", {username, password});
-      const status = response.status;
-      console.log(`status = ${status}`);
-      const data = response.data;
-      console.log(`data = ${JSON.stringify(data,undefined,2)}`);
-      if (status == 200) {
-        set_authentication(data);
-        return h.response("Succesfully registered to Rally").code(200);
-      } else {
-        console.log('Registration failed: clearing authentication data');
-        set_authentication();
-        return h.response(response.statusText).code(status);
-      }
-    }
+    handler: register
   });
 
   server.route({
@@ -106,9 +109,13 @@ async function start() {
         set_authentication(data);
         return h.response("Succesfully refreshed token").code(200);
       } else {
-        console.log('Registration failed: clearing authentication data');
-        set_authentication();
-        return h.response(response.statusText).code(status);
+        // console.log('Refresh failed: clearing authentication data');
+        // set_authentication();
+        // return h.response(response.statusText).code(status);
+
+        // Refresh endpoint is broken.  Just register again.
+        console.log('Refresh failed: attempting to re-register');
+        return register(request, h);
       }
 
     }
