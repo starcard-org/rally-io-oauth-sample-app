@@ -74,9 +74,9 @@ async function start() {
       const response = await httpPost(rally_api_url + "/oauth/register", {username, password});
       const status = response.status;
       console.log(`status = ${status}`);
+      const data = response.data;
+      console.log(`data = ${JSON.stringify(data,undefined,2)}`);
       if (status == 200) {
-        const data = response.data;
-        console.log(`data = ${JSON.stringify(data,undefined,2)}`);
         set_authentication(data);
         return h.response("Succesfully registered to Rally").code(200);
       } else {
@@ -99,9 +99,9 @@ async function start() {
       const response = await httpPost(rally_api_url + "/oauth/refresh", { refresh_token});
       const status = response.status;
       console.log(`status = ${status}`);
+      const data = response.data;
+      console.log(`data = ${JSON.stringify(data,undefined,2)}`);
       if (status == 200) {
-        const data = response.data;
-        console.log(`data = ${JSON.stringify(data,undefined,2)}`);
         set_authentication(data);
         return h.response("Succesfully refreshed token").code(200);
       } else {
@@ -189,7 +189,6 @@ async function start() {
       console.log("Calling Rally IO transfer API");
       const rally_response = await httpPost(
         rally_api_url + "/transactions/transfer/initiate",
-        //{ fromRnbUserId, toRnbUserId, coinKind, amount, inputType, note, showNote, showUserName },
         request.payload,
         { Authorization: "Bearer " + access_token }
       );
