@@ -19,6 +19,7 @@
   "dependencies": {
     "@hapi/hapi": "^20.1.0",
     "@hapi/inert": "^6.0.3",
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0"
   }
 }

@@ -1,5 +1,6 @@
 'use strict';
 
+require('dotenv').config();
 const axios = require('axios').default;
 const Hapi = require('@hapi/hapi');
 const Path = require('path');
