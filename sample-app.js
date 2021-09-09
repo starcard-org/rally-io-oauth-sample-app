@@ -6,7 +6,8 @@ const Hapi = require('@hapi/hapi');
 const Path = require('path');
 let port = process.env.SAMPLE_APP_PORT;
 port = port && parseInt(port) || 5555;
-const rally_api_url = (process.env.RALLY_API_URL || "http://localhost:3000") + "/v1";
+const rally_v1_url = (process.env.RALLY_API_URL || "http://localhost:3000") + "/v1";
+const rally_api_url = (process.env.RALLY_API_URL || "http://localhost:3000") + "/api";
 const username = process.env.RALLY_IO_USERNAME;
 const password = process.env.RALLY_IO_PASSWORD;
 const callback_url = process.env.SAMPLE_APP_CALLBACK || `http://localhost:${port}/callback`;
@@ -56,7 +57,7 @@ function set_authentication(data) {
 async function register(request, h) {
   console.log("/register");
   console.log("Trying to register to Rally");
-  const response = await httpPost(rally_api_url + "/oauth/register", {username, password});
+  const response = await httpPost(rally_v1_url + "/oauth/register", {username, password});
   const status = response.status;
   console.log(`status = ${status}`);
   const data = response.data;
@@ -100,7 +101,7 @@ async function start() {
       if (!refresh_token) {
         return h.response("Application Not Registered With Rally").code(401);
       }
-      const response = await httpPost(rally_api_url + "/oauth/refresh", { refresh_token});
+      const response = await httpPost(rally_v1_url + "/oauth/refresh", { refresh_token});
       const status = response.status;
       console.log(`status = ${status}`);
       const data = response.data;
@@ -141,7 +142,7 @@ async function start() {
       const state = crypto.randomBytes(10).toString('hex');
       console.log(`Calling Rally IO authorize API: state = ${state}`);
       const rally_response = await httpPost(
-        rally_api_url + "/oauth/authorize",
+        rally_v1_url + "/oauth/authorize",
         { callback: callback_url, state },
         { Authorization: "Bearer " + access_token }
       );
@@ -173,7 +174,7 @@ async function start() {
         return h.response("No authorization to continue").code(200);
       }
       const rally_response = await httpPost(
-        rally_api_url + "/oauth/userinfo",
+        rally_v1_url + "/oauth/userinfo",
         { code },
         { Authorization: "Bearer " + access_token }
       );
@@ -196,7 +197,7 @@ async function start() {
       }
       console.log("Calling Rally IO transfer API");
       const rally_response = await httpPost(
-        rally_api_url + "/transactions/transfer/initiate",
+        rally_v1_url + "/transactions/transfer/initiate",
         request.payload,
         { Authorization: "Bearer " + access_token }
       );
@@ -221,7 +222,7 @@ async function start() {
 
       console.log('Calling GET /creators/top_holders_and_transactions');
       const rally_response = await httpGet(
-        rally_api_url + `/creators/top_holders_and_transactions?rnbUserId=${rnbUserId}&symbol=${symbol}&timePeriod=${timePeriod}`,
+        rally_v1_url + `/creators/top_holders_and_transactions?rnbUserId=${rnbUserId}&symbol=${symbol}&timePeriod=${timePeriod}`,
         { Authorization: "Bearer " + access_token },
       );
       console.log(`rally_response = ${JSON.stringify(rally_response.data)}`);
@@ -247,7 +248,7 @@ async function start() {
       console.log(`userId = ${userId}`);
       console.log("Calling Rally IO userinfo API");
       const rally_response = await httpGet(
-        `${rally_api_url}/users/rally/${userId}/userinfo`,
+        `${rally_v1_url}/users/rally/${userId}/userinfo`,
         { Authorization: "Bearer " + access_token }
       );
 
@@ -268,7 +269,7 @@ async function start() {
       console.log(`userId = ${userId}`);
       console.log("Calling Rally IO balance API");
       const rally_response = await httpGet(
-        `${rally_api_url}/users/rally/${userId}/balance`,
+        `${rally_v1_url}/users/rally/${userId}/balance`,
         { Authorization: "Bearer " + access_token }
       );
 
@@ -290,7 +291,27 @@ async function start() {
 
       console.log(`Calling Rally IO flow_control_limits API with userId = ${userId}, symbol = ${symbol}`);
       const rally_response = await httpGet(
-        `${rally_api_url}/users/rally/${userId}/flow_control_limits/${symbol}`,
+        `${rally_v1_url}/users/rally/${userId}/flow_control_limits/${symbol}`,
+        { Authorization: "Bearer " + access_token }
+      );
+
+      console.log(`rally_response = ${JSON.stringify(rally_response.data)}`);
+      return h.response(rally_response.data).code(rally_response.status);
+    }
+  });
+
+  server.route({
+    method: 'POST',
+    path: "/transfer_nft",
+    handler: async function(request, h) {
+      console.log("/transfer_nft");
+      if (!access_token) {
+        return h.response("Application Not Registered With Rally").code(401);
+      }
+      console.log("Calling Rally IO transfer nft API");
+      const rally_response = await httpPost(
+        rally_api_url + "/transfer-requests",
+        request.payload,
         { Authorization: "Bearer " + access_token }
       );
 
